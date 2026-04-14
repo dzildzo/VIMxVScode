@@ -1,0 +1,75 @@
+{
+  "name": "iron-ide",
+  "version": "1.0.0-alpha",
+  "description": "Hardcore Lightweight IDE built on Electron, React and Monaco",
+  "main": "dist/main/main.js",
+  "author": "Iron Architect",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run watch:main\" \"npm run watch:renderer\" \"wait-on dist/main/main.js && electron .\"",
+    "start": "electron .",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer": "webpack --config config/webpack.renderer.config.ts",
+    "watch:main": "tsc -p tsconfig.main.json --watch",
+    "watch:renderer": "webpack serve --config config/webpack.renderer.config.ts",
+    "package": "electron-builder",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "monaco-editor": "^0.45.0",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-node": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "chokidar": "^3.5.3",
+    "fs-extra": "^11.2.0",
+    "globby": "^14.0.0",
+    "uuid": "^9.0.1",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/node": "^20.10.5",
+    "@types/uuid": "^9.0.7",
+    "@types/fs-extra": "^11.0.4",
+    "typescript": "^5.3.3",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "html-webpack-plugin": "^5.6.0",
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.5.1",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0"
+  },
+  "build": {
+    "appId": "com.iron.ide",
+    "productName": "Iron IDE",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

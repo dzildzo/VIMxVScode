@@ -1,0 +1,46 @@
+{
+  "name": "my-ide",
+  "version": "1.0.0",
+  "description": "Lightweight IDE built with Electron, React, and Monaco Editor",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "concurrently \"npm run build:main\" \"npm run build:renderer\" \"wait-on dist/main.js dist/renderer.js && electron .\"",
+    "build:main": "webpack --config webpack.main.config.js",
+    "build:renderer": "webpack --config webpack.renderer.config.js",
+    "build": "npm run build:main && npm run build:renderer",
+    "watch:main": "webpack --config webpack.main.config.js --watch",
+    "watch:renderer": "webpack --config webpack.renderer.config.js --watch",
+    "dev": "concurrently \"npm run watch:main\" \"npm run watch:renderer\" \"wait-on dist/main.js dist/renderer.js && cross-env NODE_ENV=development electron .\"",
+    "package": "electron-builder",
+    "build:lsp-server": "tsc src/lsp/simple-server.ts --outDir dist-lsp --module commonjs --target ES2022"
+  },
+  "keywords": ["ide", "electron", "monaco", "editor"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "concurrently": "^9.2.1",
+    "copy-webpack-plugin": "^14.0.0",
+    "cross-env": "^10.0.0",
+    "css-loader": "^7.1.4",
+    "html-webpack-plugin": "^5.6.6",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.7",
+    "typescript": "^6.0.2",
+    "vscode-languageserver-types": "^3.17.5",
+    "wait-on": "^9.0.5",
+    "webpack": "^5.106.1",
+    "webpack-cli": "^7.0.2"
+  },
+  "dependencies": {
+    "chokidar": "^5.0.0",
+    "monaco-editor": "^0.55.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  }
+}
