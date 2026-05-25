@@ -1,0 +1,127 @@
+# Init script for OnePlus 13
+# Pixel UI adaptation
+
+on init
+    # Set permissions
+    chmod 0664 /sys/class/leds/vibrator/trigger
+    chmod 0664 /sys/class/timed_output/vibrator/enable
+    chmod 0664 /sys/class/timed_output/vibrator/amp
+    chmod 0664 /sys/class/timed_output/vibrator/haptic
+    chmod 0664 /sys/class/backlight/panel0-backlight/brightness
+    chmod 0664 /sys/class/backlight/panel0-backlight/max_brightness
+
+    # Create directories
+    mkdir /dev/block/bootdevice/by-name 0770 root root
+    mkdir /mnt/vendor/persist 0770 root root
+    mkdir /mnt/vendor/modem_fs1 0770 root root
+    mkdir /mnt/vendor/modem_fs2 0770 root root
+
+    # Symlinks
+    symlink /sys/class/thermal/thermal-sensor0 /sys/class/thermal/thermal_sensor0
+    symlink /sys/class/thermal/thermal-sensor1 /sys/class/thermal/thermal_sensor1
+    symlink /sys/class/thermal/thermal-sensor2 /sys/class/thermal/thermal_sensor2
+    symlink /sys/class/thermal/thermal-sensor3 /sys/class/thermal/thermal_sensor3
+
+    # Set default properties
+    setprop ro.vendor.qcom.hw_version 1
+    setprop ro.vendor.qcom.sys.partitioner 1
+
+on boot
+    # Start essential services
+    start vendor.qcrild
+    start vendor.ril-daemon
+    start vendor.netmgrd
+    start vendor.qti.gnss-loc-hidl-service
+    start vendor.sensors-hal-service
+    start vendor.audio-hal-service
+    start vendor.camera-provider-service
+
+    # Set permissions for modem
+    chown radio.radio /dev/smd0
+    chown radio.radio /dev/smd1
+    chown radio.radio /dev/smd2
+    chown radio.radio /dev/smd3
+    chmod 0660 /dev/smd0
+    chmod 0660 /dev/smd1
+    chmod 0660 /dev/smd2
+    chmod 0660 /dev/smd3
+
+    # Display settings
+    write /sys/class/backlight/panel0-backlight/brightness 1023
+
+    # Touchscreen
+    write /proc/touchpanel/double_tap_enable 1
+
+on zygote-start
+    # Start camera service
+    start vendor.camera-service
+
+    # Start audio service
+    start vendor.audio-service
+
+on property:sys.boot_completed=1
+    # Set final properties after boot
+    setprop persist.sys.oneplus.cust.brand oneplus
+    setprop persist.sys.oneplus.cust.device oneplus13
+    setprop persist.sys.oneplus.cust.model CPH2649
+
+    # Enable features
+    setprop persist.vendor.camera.enable_raw 1
+    setprop persist.vendor.audio.hifi 1
+
+service qcrild /vendor/bin/qcrild
+    class main
+    user radio
+    group radio net_raw net_admin net_bind_service
+    capabilities NET_BIND_SERVICE NET_RAW NET_ADMIN
+    oneshot
+
+service ril-daemon /vendor/bin/ril-daemon
+    class main
+    user radio
+    group radio net_raw net_admin net_bind_service
+    capabilities NET_BIND_SERVICE NET_RAW NET_ADMIN
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 root radio
+    ioprio realtime 4
+
+service netmgrd /vendor/bin/netmgrd
+    class main
+    user radio
+    group radio net_raw net_admin
+    capabilities NET_BIND_SERVICE NET_RAW NET_ADMIN
+
+service gnss-service /vendor/bin/location-mq-gnss-service
+    class main
+    user gps
+    group gps net_bind_service
+    capabilities NET_BIND_SERVICE
+
+service sensors-hal /vendor/bin/sensors-hal
+    class hal
+    user system
+    group system
+    capabilities NET_BIND_SERVICE
+
+service audio-hal /vendor/bin/audio-hal-service
+    class hal
+    user system
+    group system audio media
+    capabilities NET_BIND_SERVICE
+
+service camera-provider /vendor/bin/camera-provider-service
+    class hal
+    user system
+    group system camera media
+    capabilities NET_BIND_SERVICE
+
+on property:ro.debuggable=1
+    # Enable debugging features in debug builds
+    start vendor.console
+
+service console /system/bin/sh
+    class late_start
+    user shell
+    group shell
+    disabled
+    oneshot

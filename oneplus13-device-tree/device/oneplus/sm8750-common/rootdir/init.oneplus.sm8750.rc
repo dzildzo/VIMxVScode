@@ -1,0 +1,107 @@
+# Copyright (c) 2024 The LineageOS Project
+
+import /vendor/etc/init/hw/init.qcom.rc
+import /vendor/etc/init/hw/init.qcom.usb.rc
+import /vendor/etc/init/hw/init.target.rc
+
+on init
+    # Set platform properties
+    setprop ro.hardware oneplus13
+    setprop ro.board.platform sm8750
+    
+    # Set density
+    setprop ro.sf.lcd_density 560
+
+on boot
+    # Start init script
+    exec u:r:system_app:s0 root -- /system/bin/sh /vendor/bin/init.oneplus.sm8750.sh
+
+service vendor.audio-hal-7-1 /vendor/bin/hw/android.hardware.audio@7.1-service-qti
+    class hal
+    user audio
+    group audio media camera input drmrpc
+    ioprio rt 4
+    writepid /dev/cpuset/system-background/tasks
+
+service vendor.bluetooth-hal-1-1 /vendor/bin/hw/android.hardware.bluetooth@1.1-service-qti
+    class hal
+    user bluetooth
+    group bluetooth net_bt_admin net_bt stack
+    capabilities NET_ADMIN NET_RAW BLOCK_SUSPEND
+    seclabel u:r:hal_bluetooth_default:s0
+
+service vendor.camera-provider-2-7 /vendor/bin/hw/android.hardware.camera.provider@2.7-service_64
+    class hal
+    user camera
+    group camera media input drmrpc
+    ioprio rt 4
+    writepid /dev/cpuset/camera-daemon/tasks /dev/stune/top-app/tasks
+    seclabel u:r:hal_camera_default:s0
+
+service vendor.gnss-2-1 /vendor/bin/hw/android.hardware.gnss@2.1-service-qti
+    class hal
+    user gnss
+    group gnss system graphics
+    capabilities NET_BIND_SERVICE
+    seclabel u:r:hal_gnss_default:s0
+
+service vendor.graphics.allocator-4-0 /vendor/bin/hw/android.hardware.graphics.allocator@4.0-service-qti
+    class hal
+    user graphics
+    group graphics drmrpc
+    ioprio rt 4
+    writepid /dev/cpuset/system-background/tasks
+
+service vendor.graphics.composer-2-4 /vendor/bin/hw/android.hardware.graphics.composer@2.4-service-qti
+    class hal
+    user graphics
+    group graphics drmrpc
+    ioprio rt 4
+    writepid /dev/cpuset/system-background/tasks
+
+service vendor.health-hal-2-1 /vendor/bin/hw/android.hardware.health@2.1-service
+    class hal
+    user system
+    group system
+    seclabel u:r:hal_health_default:s0
+
+service vendor.light-hal-2-0 /vendor/bin/hw/android.hardware.light@2.0-service.oneplus
+    class hal
+    user system
+    group system
+    seclabel u:r:hal_light_default:s0
+
+service vendor.power-hal-1-3 /vendor/bin/hw/android.hardware.power@1.3-service.oneplus
+    class hal
+    user system
+    group system
+    ioprio rt 4
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:hal_power_default:s0
+
+service vendor.sensors-hal-2-1 /vendor/bin/hw/android.hardware.sensors@2.1-service.multihal
+    class hal
+    user system
+    group system
+    seclabel u:r:hal_sensors_default:s0
+
+service vendor.thermal-hal-2-0 /vendor/bin/hw/android.hardware.thermal@2.0-service.oneplus
+    class hal
+    user system
+    group system
+    ioprio rt 4
+    writepid /dev/cpuset/system-background/tasks
+    seclabel u:r:hal_thermal_default:s0
+
+service vendor.usb-gadget-hal-1-3 /vendor/bin/hw/android.hardware.usb.gadget@1.3-service.oneplus
+    class hal
+    user usb
+    group usb
+    seclabel u:r:hal_usb_gadget_default:s0
+
+service vendor.wifi-hal-1-5 /vendor/bin/hw/android.hardware.wifi@1.5-service
+    class hal
+    user wifi
+    group wifi system inet net_raw net_admin net_bind_service
+    capabilities NET_ADMIN NET_RAW NET_BIND_SERVICE SETUID SETGID DHCP
+    seclabel u:r:hal_wifi_default:s0

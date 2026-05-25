@@ -1,0 +1,29 @@
+# Copyright (C) 2024 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+<!-- Pixel UI specific overlays -->
+<resources>
+    <!-- Device specific resources -->
+    <bool name="config_deviceSupportsAod">true</bool>
+    <bool name="config_deviceHasAlertSlider">true</bool>
+    <integer name="config_screenBrightnessDefault">102</integer>
+    <integer name="config_screenBrightnessSettingMinimum">2</integer>
+    <integer name="config_screenBrightnessSettingMaximum">255</integer>
+    
+    <!-- Button settings -->
+    <bool name="config_hasVolumeKeys">true</bool>
+    <bool name="config_hasPowerKey">true</bool>
+    
+    <!-- Camera -->
+    <bool name="config_enableAutoPowerModes">true</bool>
+    
+    <!-- Display -->
+    <string name="config_mainBuiltInDisplayCutout">M 0,0 H -100 V 100 H 100 V 0 H 0 Z</string>
+    
+    <!-- Battery -->
+    <integer name="config_batteryCapacity">6000</integer>
+    
+    <!-- OnePlus specific features -->
+    <bool name="config_supportsFastCharging">true</bool>
+    <bool name="config_supportsWirelessCharging">true</bool>
+</resources>

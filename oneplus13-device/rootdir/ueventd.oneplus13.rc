@@ -1,0 +1,22 @@
+# Copyright (C) 2024 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+# Audio devices
+/sys/class/sound/tlv:* 0666 audio audio
+
+# Camera devices
+/dev/video* 0660 media camera
+/dev/v4l-subdev* 0660 media camera
+
+# Sensors
+/sys/devices/platform/soc/*/sensors/* 0664 system system
+
+# Touchscreen
+/dev/input/event* 0660 root input
+
+# LED control
+/sys/class/leds/*/brightness 0664 system system
+
+# Battery
+/sys/class/power_supply/*/capacity 0444 system system
+/sys/class/power_supply/*/status 0444 system system

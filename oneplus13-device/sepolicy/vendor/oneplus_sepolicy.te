@@ -1,0 +1,52 @@
+# Copyright (C) 2024 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+# SELinux policy for OnePlus 13 vendor partition
+
+# Allow init to access device-specific properties
+setprop(oneplus_device_prop, "u:object_r:vendor_configs_file:s0")
+allow init oneplus_device_prop:file { read write open getattr setattr };
+
+# Camera HAL permissions
+type camera_hal_oneplus, domain;
+type camera_service_oneplus, domain;
+binder_use(camera_hal_oneplus)
+binder_call(camera_hal_oneplus, camera_service_oneplus)
+
+# Sensor HAL permissions
+type sensor_hal_oneplus, domain;
+allow sensor_hal_oneplus sysfs_sensors:dir search;
+allow sensor_hal_oneplus sysfs_sensors:file { read write open getattr };
+
+# Display HAL permissions
+type display_hal_oneplus, domain;
+allow display_hal_oneplus sysfs_display:dir search;
+allow display_hal_oneplus sysfs_display:file { read write open getattr };
+
+# Audio HAL permissions
+type audio_hal_oneplus, domain;
+allow audio_hal_oneplus audio_device:chr_file { read write open ioctl getattr };
+
+# Power HAL permissions
+type power_hal_oneplus, domain;
+allow power_hal_oneplus sysfs_cpu:dir search;
+allow power_hal_oneplus sysfs_cpu:file { read write open getattr };
+
+# USB HAL permissions
+type usb_hal_oneplus, domain;
+allow usb_hal_oneplus sysfs_usb:dir search;
+allow usb_hal_oneplus sysfs_usb:file { read write open getattr };
+
+# Bluetooth HAL permissions
+type bluetooth_hal_oneplus, domain;
+allow bluetooth_hal_oneplus bt_device:chr_file { read write open ioctl getattr };
+
+# Vendor service permissions
+service_vendor_hwservice(binder_camera_service_oneplus, camera_service_oneplus)
+service_vendor_hwservice(binder_sensor_service_oneplus, sensor_hal_oneplus)
+service_vendor_hwservice(binder_display_service_oneplus, display_hal_oneplus)
+
+# File context mappings
+/vendor/bin/hw/android.hardware.camera.provider@2.6-service-oneplus -- u:object_r:camera_hal_exec:s0
+/vendor/bin/hw/android.hardware.sensors@2.1-service-oneplus -- u:object_r:sensor_hal_exec:s0
+/vendor/bin/hw/android.hardware.display@2.4-service-oneplus -- u:object_r:display_hal_exec:s0
