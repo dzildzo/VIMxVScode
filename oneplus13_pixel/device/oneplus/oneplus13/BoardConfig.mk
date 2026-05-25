@@ -1,0 +1,156 @@
+# Board configuration for OnePlus 13
+# Pixel UI - Snapdragon 8 Gen 4 (SM8750)
+
+# Platform
+TARGET_BOARD_PLATFORM := sm8750
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno830
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv9-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 := 
+TARGET_CPU_VARIANT := cortex-x4
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := cortex-a720
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := oneplus13
+TARGET_NO_BOOTLOADER := true
+
+# Platform specific
+BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := false
+
+# Kernel
+BOARD_KERNEL_CMDLINE := \
+    androidboot.hardware=qcom \
+    androidboot.memcg=1 \
+    lpm_levels.sleep_disabled=1 \
+    video=vfb:640x400,bpp=32,memsize=3072000 \
+    msm_rtb.filter=0x237 \
+    service_locator.enable=1 \
+    androidboot.usbcontroller=a600000.dwc3 \
+    loop.max_part=7 \
+    cgroup.memory=nokmem,kcpuidle \
+    buildproduct=pixel_oneplus13
+
+BOARD_KERNEL_BASE := 0x00000000
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+BOARD_RAMDISK_OFFSET := 0x01000000
+BOARD_KERNEL_IMAGE_NAME := Image.gz
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --kernel_offset 0x00008000
+BOARD_MKBOOTIMG_ARGS += --dtb_offset 0x01f00000
+
+# Kernel build
+TARGET_KERNEL_SOURCE := kernel/oneplus/sm8750
+TARGET_KERNEL_CONFIG := oneplus13_defconfig
+TARGET_KERNEL_CLANG_COMPILE := true
+TARGET_KERNEL_CLANG_VERSION := r522817
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    DTC_EXT=$(shell pwd)/prebuilts/misc/linux-x86/dtc/dtc
+
+# Filesystem
+BOARD_BOOTIMAGE_PARTITION_SIZE := 201326592
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 8589934592
+BOARD_VENDORIMAGE_PARTITION_SIZE := 2147483648
+BOARD_PRODUCTIMAGE_PARTITION_SIZE := 1073741824
+BOARD_ODMIMAGE_PARTITION_SIZE := 536870912
+BOARD_FLASH_BLOCK_SIZE := 262144
+
+BOARD_FILESYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_PRODUCT := product
+TARGET_COPY_OUT_ODM := odm
+
+# Recovery
+BOARD_HAS_LARGE_RECOVERY := true
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_USES_FULL_RECOVERY_IMAGE := true
+
+# Display
+TARGET_SCREEN_WIDTH := 1440
+TARGET_SCREEN_HEIGHT := 3168
+TARGET_SCREEN_DENSITY := 560
+
+# HWComposer
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+USE_OPENGL_RENDERER := true
+MAX_EGL_CACHE_KEY_SIZE := 12*1024
+MAX_EGL_CACHE_SIZE := 2048*1024
+
+# Audio
+AUDIO_FEATURE_ENABLED_EXTENDED_COMPRESS_FORMAT := true
+AUDIO_FEATURE_ENABLED_GEF_SUPPORT := true
+AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
+AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
+AUDIO_FEATURE_ENABLED_SSR := true
+AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := false
+BOARD_SUPPORTS_OPENSOURCE_STHAL := true
+
+# Camera
+USE_DEVICE_SPECIFIC_CAMERA := true
+TARGET_USES_QTI_CAMERA_DEVICE := true
+
+# Bluetooth
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_QCOM := true
+QCOM_BT_USE_BTNV := true
+
+# WiFi
+BOARD_WLAN_DEVICE := qcwcn
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+WIFI_DRIVER_FW_PATH_AP := "ap"
+WIFI_DRIVER_FW_PATH_STA := "sta"
+WIFI_DRIVER_FW_PATH_P2P := "p2p"
+WIFI_DRIVER_STATE_CTRL_PARAM := "/dev/wlan"
+WIFI_DRIVER_STATE_OFF := "OFF"
+WIFI_DRIVER_STATE_ON := "ON"
+WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
+
+# GPS
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+LOC_HIDL_VERSION := 4.0
+
+# Sensors
+SENSOR_DIRECT_REPORT_USAGE := true
+
+# Power
+TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/double_tap_enable"
+TARGET_HAS_UDFPS := true
+
+# HIDL
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+    device/oneplus/oneplus13/framework_compatibility_matrix.xml \
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
+    vendor/aosp/config/device_framework_matrix.xml
+
+DEVICE_MANIFEST_FILE := \
+    device/oneplus/oneplus13/manifest.xml
+
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+    device/oneplus/oneplus13/sepolicy/vendor
+
+# Inherit from QCOM common
+-include hardware/qcom-caf/common/BoardConfigQcom.mk
+
+# Vendor specific
+include vendor/oneplus/oneplus13/BoardConfigVendor.mk

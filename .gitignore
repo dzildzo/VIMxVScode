@@ -1,0 +1,40 @@
+```
+# Build outputs
+out/
+dist/
+build/
+intermediates/
+bin/
+gen/
+
+# Android specific
+*.apk
+*.aar
+*.dex
+*.so
+*.jar
+!*.jar # Keep jar files that might be part of source control
+
+# Gradle
+.gradle/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS generated files
+.DS_Store
+Thumbs.db
+```

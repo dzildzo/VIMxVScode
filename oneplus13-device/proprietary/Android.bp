@@ -1,0 +1,37 @@
+// Copyright (C) 2024 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+
+package {
+    default_system_library_headers: ["libc", "libdl", "liblog"],
+}
+
+cc_library_shared {
+    name: "libcamera_helper",
+    srcs: ["libcamera_helper.so"],
+    shared_libs: [
+        "libcutils",
+        "libhardware",
+        "liblog",
+    ],
+    target: {
+        android: {
+            enabled: true,
+        },
+    },
+}
+
+cc_library_shared {
+    name: "libsensor_fusion",
+    srcs: ["libsensor_fusion.so"],
+    shared_libs: [
+        "libcutils",
+        "libhardware",
+        "liblog",
+        "libutils",
+    ],
+    target: {
+        android: {
+            enabled: true,
+        },
+    },
+}

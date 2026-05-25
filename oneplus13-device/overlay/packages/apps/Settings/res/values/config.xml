@@ -1,0 +1,17 @@
+# Copyright (C) 2024 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+
+<!-- Settings specific overlays -->
+<resources>
+    <!-- Device specific settings -->
+    <string name="config_deviceName">OnePlus 13</string>
+    <string name="config_deviceModel">SM8750</string>
+    
+    <!-- Features enabled by default -->
+    <bool name="config_showDeveloperOptions">true</bool>
+    <bool name="config_enableAdaptiveBrightness">true</bool>
+    
+    <!-- OnePlus specific settings -->
+    <bool name="config_showAlertSliderSettings">true</bool>
+    <bool name="config_showFastChargingSettings">true</bool>
+</resources>

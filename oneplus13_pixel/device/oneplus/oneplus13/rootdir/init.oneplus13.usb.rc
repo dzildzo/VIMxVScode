@@ -1,0 +1,82 @@
+# USB init script for OnePlus 13
+# Pixel UI adaptation
+
+on init
+    # Set default USB configuration
+    setprop persist.vendor.usb.config adb
+    setprop ro.usb.pid_suffix 1234
+
+on boot
+    # Configure USB controller
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/idVendor 0x2717
+    write /config/usb_gadget/g1/bcdDevice 0x0100
+    write /config/usb_gadget/g1/bcdUSB 0x0300
+
+    # Create function configs
+    mkdir /config/usb_gadget/g1/functions/ffs.adb 0755 root root
+    mkdir /config/usb_gadget/g1/functions/mtp.gs0 0755 root root
+    mkdir /config/usb_gadget/g1/functions/adbd.gs1 0755 root root
+
+on property:sys.usb.config=adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "ADB"
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/adbd.gs1 /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=mtp,adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "MTP + ADB"
+    ln -s /config/usb_gadget/g1/functions/mtp.gs0 /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=rndis,adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "RNDIS + ADB"
+    ln -s /config/usb_gadget/g1/functions/rndis.gs4 /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=ptp,adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "PTP + ADB"
+    ln -s /config/usb_gadget/g1/functions/ptp.gs2 /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=mass_storage,adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "Mass Storage + ADB"
+    ln -s /config/usb_gadget/g1/functions/mass_storage.gs5 /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=midi,adb
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration "MIDI + ADB"
+    ln -s /config/usb_gadget/g1/functions/midi.gs6 /config/usb_gadget/g1/configs/c.1/
+    ln -s /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/c.1/
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.usb.config=none
+    write /config/usb_gadget/g1/UDC ""
+    write /config/usb_gadget/g1/configs/c.1/strings/0x409/configuration ""
+    rm /config/usb_gadget/g1/configs/c.1/*
+    write /config/usb_gadget/g1/UDC "a600000.dwc3"
+
+on property:sys.boot_completed=1
+    # Set default USB config after boot
+    setprop sys.usb.config adb
+
+service adbd /system/bin/adbd
+    class late_start
+    user shell
+    group shell cache
+    capabilities NET_BIND_SERVICE BLOCK_SUSPEND
+    androidboot_adb_enabled true
+
+on property:ro.debuggable=1
+    # Enable additional USB debugging features
+    setprop persist.sys.usb.config adb

@@ -1,0 +1,19 @@
+# fstab for OnePlus 13 (SM8750)
+# <src>                                 <mnt_point>         <type>      <mnt_flags>                                   <fs_mgr_flags>
+
+/dev/block/by-name/boot                 /boot               emmc        defaults                                        recoveryonly
+/dev/block/by-name/recovery             /recovery           emmc        defaults                                        recoveryonly
+/dev/block/by-name/system               /system             ext4        ro,barrier=1,discard                          wait,verify
+/dev/block/by-name/system_ext           /system_ext         ext4        ro,barrier=1,discard                          wait,verify
+/dev/block/by-name/product              /product            ext4        ro,barrier=1,discard                          wait,verify
+/dev/block/by-name/vendor               /vendor             ext4        ro,barrier=1,discard                          wait,verify
+/dev/block/by-name/odm                  /odm                ext4        ro,barrier=1,discard                          wait,verify
+/dev/block/by-name/userdata             /data               f2fs        nosuid,nodev,noatime,discard,mode=0770,errors=panic wait,check,floor_percent=5,reserve_root=5120,resgid=1065,encryptable=userdata
+/dev/block/by-name/cache                /cache              ext4        nosuid,nodev,noatime,discard,barrier=1          wait,check,encryptable=userdata
+/dev/block/by-name/metadata             /metadata           ext4        nosuid,nodev,noatime,barrier=1                  wait,check
+/dev/block/by-name/persist              /persist            ext4        nosuid,nodev,noatime,barrier=1                  wait,check
+/dev/block/by-name/modem                /firmware/image     ext4        ro,context=u:object_r:firmware_file:s0          wait
+/dev/block/by-name/dsp                  /firmware/image/dsp ext4        ro,context=u:object_r:firmware_file:s0          wait
+
+# USB OTG
+/dev/block/auto/usb                     /usb_otg            vfat        nosuid,nodev,noatime,utf8,shortname=mixed       voldmanaged=usb:auto

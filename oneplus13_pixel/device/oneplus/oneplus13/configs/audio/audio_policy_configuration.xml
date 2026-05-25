@@ -1,0 +1,165 @@
+# Audio Policy Configuration for OnePlus 13
+# Pixel UI adaptation
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<audioPolicyConfiguration version="7.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <globalConfiguration speaker_drc_enabled="true" call_screen_mode_supported="true"/>
+
+    <modules>
+        <!-- Primary Audio HAL -->
+        <module name="primary" halVersion="2.0">
+            <attachedDevices>
+                <item>Earpiece</item>
+                <item>Speaker</item>
+                <item>Built-In Mic</item>
+                <item>Built-In Back Mic</item>
+                <item>Telephony Tx</item>
+                <item>Telephony Rx</item>
+            </attachedDevices>
+
+            <defaultOutputDevice>Speaker</defaultOutputDevice>
+
+            <mixPorts>
+                <mixPort name="primary output" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY AUDIO_OUTPUT_FLAG_FAST">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
+                <mixPort name="deep_buffer" role="source" flags="AUDIO_OUTPUT_FLAG_DEEP_BUFFER">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
+                <mixPort name="compressed_offload" role="source" flags="AUDIO_OUTPUT_FLAG_DIRECT AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD">
+                    <profile name="" format="AUDIO_FORMAT_MP3"
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
+                <mixPort name="primary input" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_IN_MONO AUDIO_CHANNEL_IN_STEREO"/>
+                </mixPort>
+            </mixPorts>
+
+            <devicePorts>
+                <!-- Output devices -->
+                <devicePort tagName="Earpiece" type="AUDIO_DEVICE_OUT_EARPIECE" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_MONO"/>
+                </devicePort>
+                <devicePort tagName="Speaker" type="AUDIO_DEVICE_OUT_SPEAKER" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
+                <devicePort tagName="Wired Headset" type="AUDIO_DEVICE_OUT_WIRED_HEADSET" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
+                <devicePort tagName="Wired Headphones" type="AUDIO_DEVICE_OUT_WIRED_HEADPHONE" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
+                <devicePort tagName="BT SCO" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,16000" channelMasks="AUDIO_CHANNEL_OUT_MONO"/>
+                </devicePort>
+                <devicePort tagName="BT SCO Headset" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,16000" channelMasks="AUDIO_CHANNEL_OUT_MONO"/>
+                </devicePort>
+
+                <!-- Input devices -->
+                <devicePort tagName="Built-In Mic" type="AUDIO_DEVICE_IN_BUILTIN_MIC" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_IN_MONO AUDIO_CHANNEL_IN_STEREO"/>
+                </devicePort>
+                <devicePort tagName="Built-In Back Mic" type="AUDIO_DEVICE_IN_BACK_MIC" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_IN_MONO AUDIO_CHANNEL_IN_STEREO"/>
+                </devicePort>
+                <devicePort tagName="Wired Headset Mic" type="AUDIO_DEVICE_IN_WIRED_HEADSET" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_IN_MONO AUDIO_CHANNEL_IN_STEREO"/>
+                </devicePort>
+                <devicePort tagName="BT SCO Headset Mic" type="AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,16000" channelMasks="AUDIO_CHANNEL_IN_MONO"/>
+                </devicePort>
+                <devicePort tagName="Telephony Rx" type="AUDIO_DEVICE_IN_TELEPHONY_RX" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                </devicePort>
+            </devicePorts>
+
+            <routes>
+                <!-- Output routes -->
+                <route type="mix" sink="Earpiece"
+                       sources="primary output,deep_buffer,compressed_offload"/>
+                <route type="mix" sink="Speaker"
+                       sources="primary output,deep_buffer,compressed_offload"/>
+                <route type="mix" sink="Wired Headset"
+                       sources="primary output,deep_buffer,compressed_offload"/>
+                <route type="mix" sink="Wired Headphones"
+                       sources="primary output,deep_buffer,compressed_offload"/>
+                <route type="mix" sink="BT SCO"
+                       sources="primary output,deep_buffer"/>
+                <route type="mix" sink="BT SCO Headset"
+                       sources="primary output,deep_buffer"/>
+
+                <!-- Input routes -->
+                <route type="mix" sink="primary input"
+                       sources="Built-In Mic,Built-In Back Mic,Wired Headset Mic,BT SCO Headset Mic,Telephony Rx"/>
+            </routes>
+        </module>
+
+        <!-- QCOM Hardware Abstraction Layer -->
+        <module name="qcom" halVersion="2.0">
+            <attachedDevices>
+                <item>Proxy</item>
+            </attachedDevices>
+            <mixPorts>
+                <mixPort name="proxy output" role="source" flags="AUDIO_OUTPUT_FLAG_PROXY">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
+                <mixPort name="proxy input" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                </mixPort>
+            </mixPorts>
+            <devicePorts>
+                <devicePort tagName="Proxy" type="AUDIO_DEVICE_OUT_PROXY" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
+            </devicePorts>
+            <routes>
+                <route type="mix" sink="Proxy" sources="proxy output"/>
+            </routes>
+        </module>
+    </modules>
+
+    <!-- Volume configuration -->
+    <volumeController>
+        <deviceVolume device="AUDIO_DEVICE_OUT_SPEAKER" volumeIndexMax="15" forceUseForMedia="true"/>
+        <deviceVolume device="AUDIO_DEVICE_OUT_EARPIECE" volumeIndexMax="15"/>
+        <deviceVolume device="AUDIO_DEVICE_OUT_WIRED_HEADSET" volumeIndexMax="15"/>
+        <deviceVolume device="AUDIO_DEVICE_OUT_WIRED_HEADPHONE" volumeIndexMax="15"/>
+        <deviceVolume device="AUDIO_DEVICE_OUT_BLUETOOTH_SCO" volumeIndexMax="15"/>
+    </volumeController>
+
+    <!-- Audio effects -->
+    <effects>
+        <effect name="bassboost" library="bassboost" uuid="8631f300-7a72-11df-bb9e-0002a5d5c51b"/>
+        <effect name="virtualizer" library="virtualizer" uuid="1d4033c0-8557-11df-9f2d-0002a5d5c51b"/>
+        <effect name="equalizer" library="equalizer" uuid="ce772f20-847d-11df-bb17-0002a5d5c51b"/>
+        <effect name="reverb_env_aux" library="reverb" uuid="4a387fc0-8ab3-11df-8bad-0002a5d5c51b"/>
+        <effect name="reverb_env_ins" library="reverb" uuid="c7a511a0-a3bb-11df-860e-0002a5d5c51b"/>
+        <effect name="reverb_pre_aux" library="reverb" uuid="f29a1400-a3bb-11df-8ddc-0002a5d5c51b"/>
+        <effect name="reverb_pre_ins" library="reverb" uuid="172cdf00-a3bc-11df-a72f-0002a5d5c51b"/>
+    </effects>
+
+    <xi:include href="/vendor/etc/audio_effects.xml"/>
+</audioPolicyConfiguration>

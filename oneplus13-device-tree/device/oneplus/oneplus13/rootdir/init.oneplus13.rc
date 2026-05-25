@@ -1,0 +1,33 @@
+# Copyright (c) 2024 The LineageOS Project
+
+on boot
+    # Set device specific properties
+    setprop ro.product.device oneplus13
+    setprop ro.product.model CPH2659
+    setprop ro.product.manufacturer OnePlus
+    
+    # Display settings
+    setprop ro.sf.lcd_density 560
+    setprop persist.sys.ui.hw 1
+    
+    # Audio settings
+    setprop ro.audio.samplerate 96000
+    setprop vendor.audio_hal.period_size 192
+    
+    # Camera auxiliary packages
+    setprop vendor.camera.aux.packagelist org.codeaurora.snapcam,com.android.camera
+    
+    # WiFi configuration
+    setprop wlan.driver.config /data/misc/wifi/WCNSS_qcom_cfg.ini
+    
+    # Enable doze mode
+    setprop doze.enabled 1
+    
+    # Quick tap feature
+    setprop config.quick_tap_enabled true
+    
+    # Power management
+    setprop persist.sys.power_profile performance
+    
+    # Thermal debug disabled
+    setprop persist.vendor.thermal.debug 0
